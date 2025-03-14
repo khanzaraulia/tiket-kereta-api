@@ -89,6 +89,18 @@ export interface KeretaType {
     schedule_details: ScheduleType
  }
 
+ export interface User {
+    id: number
+    nik: string
+    name: string
+    address: string
+    phone: string
+    user_id: number
+    app_user_token: string
+    createdAt: string
+    updatedAt: string
+    user_detail: DetailPenggunaType
+  }
  
 
 

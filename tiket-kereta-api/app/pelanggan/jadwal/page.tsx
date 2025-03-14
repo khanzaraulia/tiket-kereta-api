@@ -27,18 +27,18 @@ const getJadwal = async (
 }
 
 type props = {
-    searchParams: {
+    searchParams: Promise <{
         departured_location?: string, 
         arrived_location?: string
-    }
+    }>
 }
 
 const JadwalPage = async (myProp: props) => {
     const departure_location = 
-    myProp.searchParams?.departured_location?.toString() || ""
+    (await myProp.searchParams).departured_location?.toString() || ""
 
     const arrived_location = 
-    myProp.searchParams?.arrived_location?.toString() || ""
+    (await myProp.searchParams).arrived_location?.toString() || ""
 
     const dataJadwal = await getJadwal(
         departure_location,
@@ -56,7 +56,6 @@ const JadwalPage = async (myProp: props) => {
                 arrivedLocation={arrived_location}
                 />
             </div>
-
 
             {
                 departure_location !== "" &&

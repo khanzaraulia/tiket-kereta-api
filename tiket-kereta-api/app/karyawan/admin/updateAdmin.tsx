@@ -4,12 +4,16 @@ import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 import Modal from "@/components/Modal"
 import { toast, ToastContainer } from "react-toastify"
-import { getStoresCookie} from "@/helper/client-cookie"
+import { getStoresCookie } from "@/helper/client-cookie"
 import {axiosIstance} from "@/helper/api"
+import { User } from "../types"
 
-const AddAdmin = () => {
-    const [username, setUsername] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+
+type props = {
+    admin: User
+}
+
+const EditAdmin = (myProp: props) => {
     const [name, setName] = useState<string>("")
     const [address, setAddress] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
@@ -18,13 +22,11 @@ const AddAdmin = () => {
     const router = useRouter()
 
     const openModal = () => {
-        setUsername("")
-        setPassword("")
         setShow(true)
-        setName("")
-        setPhone("")
-        setAddress("")
-        setNik("")
+        setName(myProp.admin.name)
+        setAddress(myProp.admin.address)
+        setPhone(myProp.admin.phone)
+        setNik(myProp.admin.nik)
     }
 
     const closeModal = () => {
@@ -35,12 +37,12 @@ const AddAdmin = () => {
         try {
             e.preventDefault()
             const TOKEN = getStoresCookie(`token`)
-            const url = `/employee/register`
+            const url = `/customer/${myProp.admin.id}`
             const requestData = {
-                name, phone, address, username, password, nik
+                name, address, phone, nik
             }
             // hit endpoint to add kereta
-            const response: any = await axiosIstance.post(url, requestData, {
+            const response: any = await axiosIstance.put(url, requestData, {
                 headers: {
                     authorization: `Bearer ${TOKEN}`
                 }
@@ -50,7 +52,7 @@ const AddAdmin = () => {
             if (response.data.success == true) {
                 toast(message,
                     {
-                        containerId: `toastAdd`,
+                        containerId: `toastEdit-${myProp.admin.id}`,
                         type: "success"
                     }
                 )
@@ -60,7 +62,7 @@ const AddAdmin = () => {
             } else {
                 toast(message,
                     {
-                        containerId: `toastAdd`,
+                        containerId: `toastEdit-${myProp.admin.id}`,
                         type: "warning"
                     }
                 )
@@ -70,7 +72,7 @@ const AddAdmin = () => {
             toast(
                 `Something wrong`,
                 {
-                    containerId: `toastAdd`,
+                    containerId: `toastEdit-${myProp.admin.id}`,
                     type: "error"
                 }
             )
@@ -79,18 +81,20 @@ const AddAdmin = () => {
 
     return (
         <div>
-            <ToastContainer containerId={`toastAdd`} />
+            <ToastContainer containerId={`toastEdit-${myProp.admin.id}`} />
             <button type="button"
                 onClick={() => openModal()}
-                className="px-4 py-2 rounded-md bg-lime-600 hover:bg-lime-500 text-white">
-                Tambah Data Admin
+                className="px-2 py-1 rounded-md bg-sky-600 hover:bg-sky-500 text-white flex flex-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
             </button>
             <Modal isShow={show}>
                 <form onSubmit={e => handleSubmit(e)}>
                     {/*  modal header */}
                     <div className="w-full p-3 rounded-t-lg">
                         <h1 className="font-semibold text-lg">
-                            Tambah Data Admin
+                            Edit Data Pelanggan
                         </h1>
                         <span className="text-sm text-slate-500">
                             Pastikan data yang diisi sudah benar
@@ -99,36 +103,12 @@ const AddAdmin = () => {
 
                     {/*  modal body */}
                     <div className="w-full p-3">
-                    <div className="my-2 border rounded-md p-1">
-                            <small className="text-sm font-semibold text-sky-600">
-                                Username
-                            </small>
-                            <input type="text"
-                                id={username}
-                                value={username}
-                                onChange={e => setUsername(e.target.value)}
-                                required={true}
-                                className="w-full p-1 outline-none focus:border-b-sky-600 focus:border-b" />
-                        </div>
-
                         <div className="my-2 border rounded-md p-1">
                             <small className="text-sm font-semibold text-sky-600">
-                                Password
-                            </small>
-                            <input type="password"
-                                id={password}
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                required={true}
-                                className="w-full p-1 outline-none focus:border-b-sky-600 focus:border-b" />
-                        </div>
-
-                        <div className="my-2 border rounded-md p-1">
-                            <small className="text-sm font-semibold text-sky-600">
-                                Nama
+                                Nama Kereta
                             </small>
                             <input type="text"
-                                id={name}
+                                id={`name-${myProp.admin.id}`}
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                                 required={true}
@@ -137,10 +117,10 @@ const AddAdmin = () => {
 
                         <div className="my-2 border rounded-md p-3">
                             <small className="text-sm font-semibold text-sky-600">
-                                Alamat
+                                Alamat Pelanggan
                             </small>
                             <input type="text"
-                                id={address}
+                                id={`address-${myProp.admin.id}`}
                                 value={address}
                                 onChange={e => setAddress(e.target.value)}
                                 required={true}
@@ -153,7 +133,7 @@ const AddAdmin = () => {
                                 No HP
                             </small>
                             <input type="text"
-                                id={phone}
+                                id={`phone-${myProp.admin.id}`}
                                 value={phone}
                                 onChange={e => setPhone(e.target.value)}
                                 required={true}
@@ -190,4 +170,4 @@ const AddAdmin = () => {
         </div>
     )
 }
-export default AddAdmin
+export default EditAdmin

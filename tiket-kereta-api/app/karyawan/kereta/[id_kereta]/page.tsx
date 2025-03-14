@@ -3,6 +3,8 @@ import { KeretaType } from "../../types";
 import { axiosIstance } from "@/helper/api";
 import Gerbong from "./Gerbong";
 import AddGerbong from "./addGerbong";
+import { promises } from "dns";
+import AddKursi from "./addSeat";
 
 /** function to call detail kereta 
  * that include gerbong dan kursi
@@ -32,16 +34,16 @@ const getDetailKereta = async (
 }
 
 type props = {
-    params: {
+    params: Promise<{
         id_kereta: string
         // sesuai dengan nama foldernya 
-    }
+    }>
 }
 const DetailKeretaPage = async (
     myprop: props
 ) => {
     // get value of selected id_kereta
-    const id_kereta = myprop.params.id_kereta
+    const id_kereta = (await myprop.params).id_kereta
     /** et data from backend */
     const dataKereta =
         await getDetailKereta(id_kereta)
