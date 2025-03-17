@@ -3,6 +3,8 @@ import { KeretaType, ScheduleType } from "../types"
 import { axiosIstance } from "@/helper/api"
 import Schedule from "./schedule"
 import AddScehdule from "./addSchedule"
+export const dynamic = "force-dynamic";
+
 
 /** get data jadwal */
 const getJadwal = async (): Promise<ScheduleType[]> => {

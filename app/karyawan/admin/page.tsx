@@ -4,6 +4,8 @@ import { User } from "../types"
 import {axiosIstance} from "@/helper/api";
 import Admin from "./admin";
 import AddAdmin from "./addAdmin";
+export const dynamic = "force-dynamic";
+
 
 const getPelanggan = async (): Promise<User[]> => {
     try {

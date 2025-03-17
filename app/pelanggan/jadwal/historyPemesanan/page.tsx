@@ -4,6 +4,8 @@ import React from 'react'
 import HistoryCard from './_components/historyCard'
 import { History } from '@/app/karyawan/types'
 import { axiosIstance } from '@/helper/api'
+export const dynamic = "force-dynamic";
+
 
 const GetDataHistory = async (): Promise<History[]> => {
     try {

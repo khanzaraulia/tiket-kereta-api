@@ -36,6 +36,7 @@ const AddAdmin = () => {
             e.preventDefault()
             const TOKEN = getStoresCookie(`token`)
             const url = `/employee/register`
+
             const requestData = {
                 name, phone, address, username, password, nik
             }

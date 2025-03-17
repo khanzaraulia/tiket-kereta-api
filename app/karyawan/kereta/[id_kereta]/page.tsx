@@ -5,6 +5,8 @@ import Gerbong from "./Gerbong";
 import AddGerbong from "./addGerbong";
 import { promises } from "dns";
 import AddKursi from "./addSeat";
+export const dynamic = "force-dynamic";
+
 
 /** function to call detail kereta 
  * that include gerbong dan kursi

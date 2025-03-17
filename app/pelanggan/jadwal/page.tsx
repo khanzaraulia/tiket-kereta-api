@@ -3,6 +3,8 @@ import FilterJadwal from "./filterJadwal"
 import { getServerCookie } from "@/helper/server-cookie"
 import { axiosIstance } from "@/helper/api"
 import Schedule from "./schedule"
+export const dynamic = "force-dynamic";
+
 
 /** get data jadwal */
 const getJadwal = async (

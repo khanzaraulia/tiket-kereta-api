@@ -2,6 +2,8 @@ import { KeretaType, ScheduleType } from "@/app/karyawan/types";
 import { axiosIstance } from "@/helper/api";
 import { getServerCookie } from "@/helper/server-cookie";
 import Booking from "./booking";
+export const dynamic = "force-dynamic";
+
 
 const showTime = (date: string) => {
     const currentDate = new Date(date)
